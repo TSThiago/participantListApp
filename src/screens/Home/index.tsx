@@ -1,20 +1,24 @@
 import { Text, View, TextInput, TouchableOpacity, FlatList, Alert } from "react-native";
 import { styles } from "./styles";
 import { Participant } from "../../components/Participant";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const Home = () => {
-    const [participant, setParticipant] = useState<string>('')
-    const participants = ['Rodrigo', 'Thiago', 'Victor', 'Shoiti', 'Anderson', 'Magali', 'Hideo', 'Idiraldo', 'Seu Inácio']
+    const [participant, setParticipant] = useState<string>('');
+    const [participantList, setParticipantList] = useState<string[]>([]);
 
     const handleParticipantAdd = (name : string) => {
-        if(participants.includes(name)) {
+        if(participantList.includes(name)) {
             return Alert.alert("Participante existe", "Já existe um participante com o mesmo nome na lista")
         } else {
-            Alert.alert('Participante adicionado ' ,`Você adicionou o participante ${name}`)
+            Alert.alert('Participante adicionado ' ,`Você adicionou o participante ${name}`);
+            setParticipantList(prevState => [...prevState, name])
         };
+    };
 
-    }
+    // useEffect(() => {
+
+    // }, [participantList])
 
     const handleParticipantRemove = (name: string) => {
         Alert.alert("Remover", `Remover o participante ${name}`, [
@@ -56,7 +60,7 @@ export const Home = () => {
             </View>
 
             <FlatList
-                data={participants}
+                data={participantList}
                 keyExtractor={item => item}
                 renderItem={({ item }) => (
                     <Participant
