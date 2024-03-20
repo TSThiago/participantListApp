@@ -7,32 +7,31 @@ export const Home = () => {
     const [participant, setParticipant] = useState<string>('');
     const [participantList, setParticipantList] = useState<string[]>([]);
 
-    const handleParticipantAdd = (name : string) => {
-        if(participantList.includes(name)) {
+    const handleParticipantAdd = () => {
+        if (participantList.includes(participant)) {
             return Alert.alert("Participante existe", "Já existe um participante com o mesmo nome na lista")
         } else {
-            Alert.alert('Participante adicionado ' ,`Você adicionou o participante ${name}`);
-            setParticipantList(prevState => [...prevState, name])
+            Alert.alert('Participante adicionado ', `Você adicionou o participante ${participant}`);
+            setParticipantList(prevState => [...prevState, participant]);
+            setParticipant('')
         };
     };
-
-    // useEffect(() => {
-
-    // }, [participantList])
 
     const handleParticipantRemove = (name: string) => {
         Alert.alert("Remover", `Remover o participante ${name}`, [
             {
                 text: 'Sim',
-                onPress: () => Alert.alert('Deletado!')
+                onPress: () => {
+                    setParticipantList(prevState => prevState.filter(participants => participants !== name))
+                    Alert.alert('Deletado!')
+                }
             },
             {
                 text: 'Não',
                 style: 'cancel'
             }
-        ])
-        console.log(`Você removeu o participante ${name}`)
-    }
+        ]);
+    };
 
     return (
         <View style={styles.container}>
@@ -50,9 +49,10 @@ export const Home = () => {
                     placeholder="Nome do participante"
                     placeholderTextColor="#6B6B6B"
                     onChangeText={e => setParticipant(e)}
+                    value={participant}
                 />
 
-                <TouchableOpacity style={styles.button} onPress={() => handleParticipantAdd(participant)}>
+                <TouchableOpacity style={styles.button} onPress={() => handleParticipantAdd()}>
                     <Text style={styles.buttonText}>
                         +
                     </Text>
